@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 /* BFS */
-void bfs (const std::vector <std::vector <size_t> > &graph, const size_t &v, const size_t &f, std::vector<size_t> &ways) {
+void bfs (const std::vector <std::vector <size_t> > &graph, const size_t &v, const size_t &f, std::vector<ssize_t> &ways) {
     std::queue<size_t> q;
     q.push(v);
     ways[v] = 0;
@@ -21,9 +21,9 @@ void bfs (const std::vector <std::vector <size_t> > &graph, const size_t &v, con
 }
 /* Find ways count */
 size_t find_way_count (
-    const std::vector<size_t> &matilda_ways,
-    const std::vector<size_t> &leon_ways,
-    const std::vector<size_t> &milk_ways
+    const std::vector<ssize_t> &matilda_ways,
+    const std::vector<ssize_t> &leon_ways,
+    const std::vector<ssize_t> &milk_ways
 ) {
     size_t min = matilda_ways[0] + milk_ways[0] + leon_ways[0];
     for (size_t i = 0; i < matilda_ways.size(); i++) {
@@ -55,17 +55,17 @@ void get_input (
 void set_output(size_t count) {
     std::cout << count;
 }
-
+/* Main function */
 int main() {
     size_t n, m, matilda, leon, milk;
     std::vector <std::vector <size_t> > graph;
     get_input(graph, n, m, matilda, leon, milk);
 
-    std::vector<size_t> matilda_ways(graph.size(), -1);
+    std::vector<ssize_t> matilda_ways(graph.size(), -1);
     bfs(graph, matilda - 1, milk - 1, matilda_ways);
-    std::vector<size_t> leon_ways(graph.size(), -1);
+    std::vector<ssize_t> leon_ways(graph.size(), -1);
     bfs(graph, leon - 1, milk - 1, leon_ways);
-    std::vector<size_t> milk_ways(graph.size(), -1);
+    std::vector<ssize_t> milk_ways(graph.size(), -1);
     bfs(graph, milk - 1, milk - 1, milk_ways);
 
     set_output(find_way_count(matilda_ways, leon_ways, milk_ways));
