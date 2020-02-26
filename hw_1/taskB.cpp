@@ -1,57 +1,98 @@
-/* Троян-Головян Владислав */
-/* Д. З. 1, задача B "Секретные материалы" */
-/* Джон Макклейн сообщает по рации новую информацию о террористах в отдел с n полицейскими. Он звонит нескольким сотрудникам и просит распространить информацию по отделу,
- * зная, что у каждого полицейского есть связь с определёнными коллегами. Джон Макклейн хочет, чтобы операция прошла успешно. Но если полицейский позвонит коллеге, от которого
- * (возможно, не напрямую) сам получил информацию, террористы смогут отследить этот звонок и помешать операции. Если же двое сотрудников оповестят одного, ничего плохого не произойдёт.
- * Помогите Джону Макклейну. Выведите NO, если кто-то из полицейских ошибётся, делая звонок. Если всё пройдёт хорошо, выведите YES и порядок, в котором полицейские
- * получат информацию, считая, что полицейские оповещают коллег по возрастанию их номеров, а в начале Джон даёт информацию тем, кому не может позвонить никто из коллег.   */
-
+/* Troyan-Golovyan Vladislav*/
+/* Contest 1, Task B*/
 #include <iostream>
 #include <vector>
-/* Поиск в глубину */
-bool dfs(const std::vector<std::vector<int>> &graph, int v, std::vector<char> &colors,  std::vector<int> &sort_result) {
-     colors[v] = 1;
-     bool res = true;
-     for (int i = 0; i < graph[v].size() && res; ++i) {
-         if (colors[graph[v][i]] == 0) {
-             res = res && dfs(graph, graph[v][i], colors, sort_result);
-         } else if (colors[graph[v][i]] == 1) {
-             res = false;
-         }
-     }
-     colors[v] = 2;
-     sort_result.push_back(v);
-     return res;
+#include <functional>
+/* DFS */
+void dfs (
+    const std::vector< std::vector<size_t> > &graph,
+    std::vector <char> &colors,
+    size_t v,
+    const std::function < void(size_t) > &in_callback,
+    const std::function < void(size_t) > &out_callback,
+    const std::function < bool(size_t) > &call_dfs_checker
+) {
+    colors[v] = 1;
+    in_callback(v);
+    for (size_t i = 0; i < graph[v].size(); ++i) {
+        if (call_dfs_checker(graph[v][i])) {
+            dfs(graph, colors, graph[v][i], in_callback, out_callback, call_dfs_checker);
+        }
+    }
+    out_callback(v);
+    colors[v] = 2;
 }
-/* Топологическая сортировка */
-bool top_sort(const std::vector<std::vector<int>> &graph, std::vector<int> &sort_result) {
+/* Topological sort */
+bool top_sort (const std::vector<std::vector<size_t>> &graph, std::vector<size_t> &sort_result) {
     std::vector<char> colors(graph.size(), 0);
     sort_result.clear();
     bool res = true;
-    for (int i = 0; i < graph.size() && res; ++i) {
-        if (colors[i] == 0)
-            res = res && dfs(graph, i, colors, sort_result);
+    for (size_t i = 0; i < graph.size() && res; ++i) {
+        if (colors[i] == 0) {
+            dfs(
+                 graph,
+                 colors,
+                 i,
+                 [&] (size_t v) {
+
+                 },
+                 [&] (size_t v) {
+                      sort_result.push_back(v);
+                 },
+                 [&] (size_t v) -> bool {
+                     if (colors[v] == 1) {
+                         res = false;
+                     }
+                     return colors[v] == 0;
+                 }
+
+            );
+        }
     }
     return res;
 }
-
-int main() {
-    int n, m;
+/* Get input */
+void get_input (
+        size_t &n,
+        size_t &m,
+        std::vector< std::vector<size_t> > &graph
+) {
     std::cin >> n >> m;
-    std::vector<std::vector<int>> graph(n);
-    for (int i = 0; i < m; ++i) {
-        int a, b;
+    graph.assign(n, std::vector <size_t> ());
+    for (size_t i = 0; i < m; ++i) {
+        size_t a, b;
         std::cin >> a >> b;
         graph[a].push_back(b);
     }
-    std::vector<int> sort_result;
-    if (top_sort(graph, sort_result)) {
+}
+/* Set output */
+void set_output (
+    const bool res,
+    std::vector <size_t> sort_result
+) {
+    if (res) {
         std::cout << "YES" << std::endl;
-        for (int i = sort_result.size() - 1; i >= 0; --i) {
-            std::cout << sort_result[i] << " ";
+        for (size_t i = 0; i < sort_result.size(); ++i) {
+            std::cout << sort_result[sort_result.size() - i - 1] << " ";
         }
     } else {
         std::cout << "NO";
     }
+}
+/* Main function */
+int main() {
+
+    size_t n, m;
+    std::vector< std::vector<size_t> > graph;
+
+    get_input(n, m, graph);
+
+    std::vector <size_t> sort_result;
+
+    bool res = top_sort(graph, sort_result);
+
+    set_output(res, sort_result);
+
     return 0;
+
 }
