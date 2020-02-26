@@ -6,11 +6,11 @@
 #include <functional>
 /* DFS */
 void dfs (
-    const std::vector< std::vector<size_t> > &graph,
-    size_t v,
-    std::vector<char> &colors,
-    const std::function<void (const size_t)> &in_callback,
-    const std::function<void (const size_t)> &out_callback
+        const std::vector< std::vector<size_t> > &graph,
+        size_t v,
+        std::vector<char> &colors,
+        const std::function<void (const size_t)> &in_callback,
+        const std::function<void (const size_t)> &out_callback
 ) {
     colors[v] = 1;
     in_callback(v);
@@ -24,12 +24,12 @@ void dfs (
 }
 /* Function for graph condensation */
 void condense_graph (
-    const std::vector< std::vector<size_t> > &graph,
-    std::vector< std::vector<size_t> > &condensed_graph,
-    std::vector<size_t> v_comp
+        const std::vector< std::vector<size_t> > &graph,
+        std::vector< std::vector<size_t> > &condensed_graph,
+        std::vector<size_t> v_comp
 ) {
-    for (int i = 0; i < graph.size(); ++i) {
-        for (int j = 0; j < graph[i].size(); ++j) {
+    for (size_t i = 0; i < graph.size(); ++i) {
+        for (size_t j = 0; j < graph[i].size(); ++j) {
             if (v_comp[i] != v_comp[graph[i][j]]) {
                 condensed_graph[v_comp[i]].push_back(v_comp[graph[i][j]]);
             }
@@ -38,20 +38,20 @@ void condense_graph (
 }
 /* Function for getting condensed oriented graph from */
 void make_condensed_graph (
-    const std::vector<std::vector<size_t>> &graph,
-    const std::vector<std::vector<size_t>> &trans_graph,
-    std::vector<std::vector<size_t>> &condensed_graph
+        const std::vector<std::vector<size_t>> &graph,
+        const std::vector<std::vector<size_t>> &trans_graph,
+        std::vector<std::vector<size_t>> &condensed_graph
 ) {
     std::vector<size_t> order;
     std::vector<char> colors(graph.size(), 0);
     for (size_t i = 0; i < graph.size(); ++i) {
         if (colors[i] == 0) {
             dfs(
-                 graph, i, colors,
-                 [&] (const size_t v) { },
-                 [&] (const size_t v) {
-                     order.push_back(v);
-                 }
+                    graph, i, colors,
+                    [&] (const size_t v) { },
+                    [&] (const size_t v) {
+                        order.push_back(v);
+                    }
             );
         }
     }
@@ -64,14 +64,14 @@ void make_condensed_graph (
         if (colors[order[graph.size() - i  - 1]] == 0) {
             std::vector<size_t> component;
             dfs(
-                trans_graph,
-                order[graph.size() - i  - 1],
-                colors,
-                [&] (const size_t v) {
-                    component.push_back(v);
-                    v_comp[v] = components.size();
-                },
-                [&] (const size_t v) {}
+                    trans_graph,
+                    order[graph.size() - i  - 1],
+                    colors,
+                    [&] (const size_t v) {
+                        component.push_back(v);
+                        v_comp[v] = components.size();
+                    },
+                    [&] (const size_t v) {}
             );
             components.push_back(component);
         }
@@ -82,8 +82,8 @@ void make_condensed_graph (
 }
 /* Finds min edges count we need to build to make your graph strongly connected  */
 size_t count_roads (
-    const std::vector< std::vector<size_t> > &graph,
-    std::vector< std::pair<size_t, size_t> > &in_out
+        const std::vector< std::vector<size_t> > &graph,
+        std::vector< std::pair<size_t, size_t> > &in_out
 ) {
     if (graph.size() == 1)
         return 0;
@@ -107,10 +107,10 @@ size_t count_roads (
 }
 /* Get input data */
 void get_input (
-    size_t &n,
-    size_t &m,
-    std::vector< std::vector<size_t> > &graph,
-    std::vector< std::vector<size_t> > &trans_graph
+        size_t &n,
+        size_t &m,
+        std::vector< std::vector<size_t> > &graph,
+        std::vector< std::vector<size_t> > &trans_graph
 ) {
     std::cin >> n >> m;
     graph.assign(n, std::vector<size_t> ());
@@ -123,10 +123,10 @@ void get_input (
     }
 }
 /* Set output data */
-void set_output (int count) {
+void set_output (size_t count) {
     std::cout << count;
 }
-
+/* Main function */
 int main () {
 
     size_t n, m;
