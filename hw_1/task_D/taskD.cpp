@@ -12,8 +12,8 @@ public:
     }
     /* Constructor */
     ComponentVertix (size_t v, bool type) {
-       v_ = v;
-       type_ = type;
+        v_ = v;
+        type_ = type;
     }
     /* = operator */
     ComponentVertix& operator =(const ComponentVertix &right) {
@@ -224,7 +224,6 @@ public:
         for (Component &comp: components) {
             if (comp.Size() > 1) {
                 Graph g(*this, comp);
-               // std::cout << g.GammaAlgorithm();
                 if (!g.GammaAlgorithm()) {
                     return false;
                 }
@@ -258,7 +257,6 @@ public:
 
         do {
             components.clear();
-
             GetGammaComponents(laid_graph, laid_vertix, components);
             std::vector < std::pair <size_t, size_t> > contains(components.size(), std::pair <size_t, size_t> (0, 0));
             GetContainsCount(faces, components, contains );  //Get faces count contains every components
@@ -292,17 +290,17 @@ public:
             if (colors[i] == 0) {
                 bool res = true;
                 DFS(
-                    colors,
-                    i,
-                    -1,
-                    [&] (size_t v) { },
-                    [&] (size_t v) { },
-                    [&] (size_t v) -> bool {
-                        if (colors[v] == 1) {
-                            res = false;
+                        colors,
+                        i,
+                        -1,
+                        [&] (size_t v) { },
+                        [&] (size_t v) { },
+                        [&] (size_t v) -> bool {
+                            if (colors[v] == 1) {
+                                res = false;
+                            }
+                            return colors[v] == 0;
                         }
-                        return colors[v] == 0;
-                    }
                 );
                 if (!res) {
                     return res;
@@ -314,12 +312,12 @@ public:
 private:
     /* DFS */
     void DFS (
-        std::vector <char> &colors,
-        size_t v,
-        size_t p,
-        const std::function < void(size_t) > &in_callback,
-        const std::function < void(size_t) > &out_callback,
-        const std::function < bool(size_t) > &call_dfs_checker
+            std::vector <char> &colors,
+            size_t v,
+            size_t p,
+            const std::function < void(size_t) > &in_callback,
+            const std::function < void(size_t) > &out_callback,
+            const std::function < bool(size_t) > &call_dfs_checker
     ) {
         colors[v] = 1;
         in_callback(v);
@@ -390,34 +388,34 @@ private:
         bool cycle_found;
         size_t cycle_start = -1;
         DFS(
-            colors,
-            0,
-            -1,
-            [&] (size_t v) {
+                colors,
+                0,
+                -1,
+                [&] (size_t v) {
 
-            },
-            [&] (size_t v) {
-                if (v == cycle_start) {
-                    cycle.push_back(v);
-                    cycle_start = -1;
+                },
+                [&] (size_t v) {
+                    if (v == cycle_start) {
+                        cycle.push_back(v);
+                        cycle_start = -1;
+                    }
+                    if (cycle_start != -1) {
+                        cycle.push_back(v);
+                    }
+                },
+                [&] (size_t child) -> bool {
+                    if (colors[child] == 1) {
+                        cycle_start = child;
+                    }
+                    return cycle.empty() && cycle_start == -1 && colors[child] == 0;
                 }
-                if (cycle_start != -1) {
-                    cycle.push_back(v);
-                }
-            },
-            [&] (size_t child) -> bool {
-                if (colors[child] == 1) {
-                    cycle_start = child;
-                }
-                return cycle_start == -1 && colors[child] == 0;
-            }
         );
     }
     /* Get not laid components */
     void GetGammaComponents (
-        const Graph &laid_graph,
-        const std::vector <bool> &laid_vertix,
-        std::vector <Component>& components
+            const Graph &laid_graph,
+            const std::vector <bool> &laid_vertix,
+            std::vector <Component>& components
     ) {
         /* Get one edge segments */
         for (size_t i = 0; i < matrix_.size(); ++i) {
@@ -433,20 +431,20 @@ private:
             if (!laid_vertix[i] && colors[i] == 0) {
                 Component comp;
                 DFS(
-                    colors,
-                    i,
-                    -1,
-                    [&] (size_t v) {
-                        comp.AddVertix(v, laid_vertix[v]);
-                    },
-                    [&] (size_t v) {},
-                    [&] (size_t v) -> bool {
-                        if (colors[v] == 0 && laid_vertix[v]) {
-                            comp.AddVertix(v, true);
-                            return false;
+                        colors,
+                        i,
+                        -1,
+                        [&] (size_t v) {
+                            comp.AddVertix(v, laid_vertix[v]);
+                        },
+                        [&] (size_t v) {},
+                        [&] (size_t v) -> bool {
+                            if (colors[v] == 0 && laid_vertix[v]) {
+                                comp.AddVertix(v, true);
+                                return false;
+                            }
+                            return colors[v] == 0;
                         }
-                        return colors[v] == 0;
-                    }
                 );
                 if (comp.Size() != 1) {
                     components.push_back(comp);
@@ -456,9 +454,9 @@ private:
     }
     /* Get Contains Count */
     static void GetContainsCount (
-        std::vector <Face> &faces,
-        std::vector <Component> &components,
-        std::vector < std::pair <size_t, size_t> > &contains
+            std::vector <Face> &faces,
+            std::vector <Component> &components,
+            std::vector < std::pair <size_t, size_t> > &contains
     ) {
         for (size_t i = 0; i < components.size(); ++i) {
             contains[i].first = i;
@@ -469,19 +467,19 @@ private:
             }
         }
         std::sort(
-            contains.begin(),
-            contains.end(),
-            [] (std::pair <size_t, size_t> a, std::pair <size_t, size_t> b) -> bool {
-                return a.second < b.second;
-            }
+                contains.begin(),
+                contains.end(),
+                [] (std::pair <size_t, size_t> a, std::pair <size_t, size_t> b) -> bool {
+                    return a.second < b.second;
+                }
         );
     }
     /*Get chain method */
     void GetChain (
-        Graph &laid_graph,
-        std::vector <bool>  &laid_vertex,
-        Component &component,
-        std::vector <size_t> &chain
+            Graph &laid_graph,
+            std::vector <bool>  &laid_vertex,
+            Component &component,
+            std::vector <size_t> &chain
     ) {
         ssize_t start = -1;
         for (size_t i = 0; i < component.Size() && start == -1; ++i) {
@@ -491,49 +489,50 @@ private:
         }
         ssize_t end = -1;
         std::vector <char> colors(matrix_.size(), 0);
-        chain.push_back(start);
         colors[start] = 1;
         for (size_t i = 0; i < matrix_[start].size(); ++i) {
             if (colors[i] == 0 && matrix_[start][i] && !laid_graph.HasEdge(start, i) && component.HasVertix(i)) {
                 DFS(
-                    colors,
-                    i,
-                    component.GetVertix(start).GetNumber(),
-                    [&] (size_t v) {
-                        if (end == -1) {
-                            chain.push_back(v);
+                        colors,
+                        i,
+                        component.GetVertix(start).GetNumber(),
+                        [&] (size_t v) {
+                            if (laid_vertex[v]) {
+                                chain.push_back(v);
+                                end = v;
+                            }
+                        },
+                        [&] (size_t v) {
+                            if (end != -1) {
+                                chain.push_back(v);
+                            }
+                        },
+                        [&] (size_t v) -> bool {
+                            if (!component.HasVertix(v)) {
+                                return false;
+                            }
+                            if (v == start) {
+                                return false;
+                            }
+                            if (end != -1) {
+                                return false;
+                            }
+                            return colors[v] == 0;
                         }
-                    },
-                    [&] (size_t v) { },
-                    [&] (size_t v) -> bool {
-                        if (!component.HasVertix(v)) {
-                            return false;
-                        }
-                        if (v == start) {
-                            return false;
-                        }
-                        if (end != -1) {
-                            return false;
-                        }
-                        if (laid_vertex[v]) {
-                            chain.push_back(v);
-                            end = v;
-                            return false;
-                        }
-                        return colors[v] == 0;
-                    }
                 );
                 break;
             }
         }
+        chain.push_back(start);
+        std::reverse(chain.begin(), chain.end());
         colors[start] = 2;
     }
     /*Put chain method */
     static void PutChain (
-        Graph &laid_graph,
-        std::vector <bool>  &laid_vertex,
-        std::vector <size_t> &chain,
-        bool f = true
+            Graph &laid_graph,
+            std::vector <bool>  &laid_vertex,
+            std::vector <size_t> &chain,
+            bool f = true
     ) {
         for (size_t i = 0; i < chain.size() - 1; ++i) {
             laid_graph.AddEdge(chain[i], chain[i + 1]);
@@ -548,16 +547,16 @@ private:
             if (colors[i] == 0) {
                 Component comp;
                 DFS(
-                    colors,
-                    i,
-                    -1,
-                    [&] (size_t v) {
-                        comp.AddVertix(v,false);
-                    },
-                    [&] (size_t v) {},
-                    [&] (size_t v) -> bool {
-                        return colors[v] == 0;
-                    }
+                        colors,
+                        i,
+                        -1,
+                        [&] (size_t v) {
+                            comp.AddVertix(v,false);
+                        },
+                        [&] (size_t v) {},
+                        [&] (size_t v) -> bool {
+                            return colors[v] == 0;
+                        }
                 );
                 components.push_back(comp);
             }
@@ -573,27 +572,27 @@ private:
         for (size_t i = 0; i < matrix_.size(); ++i) {
             if (colors[i] == 0) {
                 DFS(
-                    colors,
-                    i,
-                    -1,
-                    [&] (size_t v, size_t p) {
-                        enter[v] = timer;
-                        ret[v] = timer;
-                        timer++;
-                    },
-                    [&] (size_t v, size_t p) { },
-                    [&] (size_t v, size_t p) {
-                        ret[p] = std::min(ret[p], enter[v]);
-                    },
-                    [&] (size_t v, size_t p) -> bool {
-                        return colors[v] == 0;
-                    },
-                    [&] (size_t v, size_t p) {
-                        ret[p] = std::min(ret[p], ret[v]);
-                        if (ret[v] > enter[p]) {
-                            bridges.emplace_back(v, p);
+                        colors,
+                        i,
+                        -1,
+                        [&] (size_t v, size_t p) {
+                            enter[v] = timer;
+                            ret[v] = timer;
+                            timer++;
+                        },
+                        [&] (size_t v, size_t p) { },
+                        [&] (size_t v, size_t p) {
+                            ret[p] = std::min(ret[p], enter[v]);
+                        },
+                        [&] (size_t v, size_t p) -> bool {
+                            return colors[v] == 0;
+                        },
+                        [&] (size_t v, size_t p) {
+                            ret[p] = std::min(ret[p], ret[v]);
+                            if (ret[v] > enter[p]) {
+                                bridges.emplace_back(v, p);
+                            }
                         }
-                    }
                 );
             }
         }
@@ -612,37 +611,36 @@ private:
         for (size_t i = 0; i < matrix_.size(); ++i) {
             if (colors[i] == 0) {
                 DFS(
-                    colors,
-                    i,
-                    -1,
-                    [&] (size_t v, size_t p, size_t* &buffer) {
-                        enter[v] = timer;
-                        ret[v] = timer;
-                        timer++;
-                        buffer = new size_t[2];
-                        buffer[0] = 0;
-                        buffer[1] = p;
-                    },
-                    [&] (size_t v, size_t p, size_t* &buffer) {
-                        if (p == -1 && buffer[0] > 1) {
-                            points.push_back(v);
+                        colors,
+                        i,
+                        -1,
+                        [&] (size_t v, size_t p, size_t* &buffer) {
+                            enter[v] = timer;
+                            ret[v] = timer;
+                            timer++;
+                            buffer = new size_t[2];
+                            buffer[0] = 0;
+                            buffer[1] = p;
+                        },
+                        [&] (size_t v, size_t p, size_t* &buffer) {
+                            if (p == -1 && buffer[0] > 1) {
+                                points.push_back(v);
+                            }
+                            delete []buffer;
+                        },
+                        [&] (size_t v, size_t p, size_t* &buffer) {
+                            ret[p] = std::min(ret[p], enter[v]);
+                        },
+                        [&] (size_t v, size_t p, size_t* &buffer) -> bool {
+                            return colors[v] == 0;
+                        },
+                        [&] (size_t v, size_t p, size_t* &buffer) {
+                            ret[p] = std::min(ret[p], ret[v]);
+                            if (ret[v] >= enter[p] && buffer[1] != -1) {
+                                points.push_back(p);
+                            }
+                            buffer[0]++;
                         }
-                        delete []buffer;
-                    },
-                    [&] (size_t v, size_t p, size_t* &buffer) {
-                        ret[p] = std::min(ret[p], enter[v]);
-                    },
-                    [&] (size_t v, size_t p, size_t* &buffer) -> bool {
-                        return colors[v] == 0;
-                    },
-                    [&] (size_t v, size_t p, size_t* &buffer) {
-                        //std::cout << buffer[0];
-                        ret[p] = std::min(ret[p], ret[v]);
-                        if (ret[v] >= enter[p] && buffer[1] != -1) {
-                            points.push_back(p);
-                        }
-                        buffer[0]++;
-                    }
                 );
             }
         }
@@ -660,24 +658,24 @@ private:
                 size_t start_point = v;
                 std::vector <size_t> group;
                 DFS(
-                    colors,
-                    i,
-                    v,
-                    [&] (size_t v, size_t p) {
-                        if (p == start_point) {
-                            group.push_back(v);
-                        }
-                    },
-                    [&] (size_t v, size_t p) { },
-                    [&] (size_t v, size_t p) { },
-                    [&] (size_t v, size_t p) -> bool {
-                        if (v == start_point) {
-                            group.push_back(p);
-                            return false;
-                        }
-                        return colors[v] == 0;
-                    },
-                    [&] (size_t v, size_t p) { }
+                        colors,
+                        i,
+                        v,
+                        [&] (size_t v, size_t p) {
+                            if (p == start_point) {
+                                group.push_back(v);
+                            }
+                        },
+                        [&] (size_t v, size_t p) { },
+                        [&] (size_t v, size_t p) { },
+                        [&] (size_t v, size_t p) -> bool {
+                            if (v == start_point) {
+                                group.push_back(p);
+                                return false;
+                            }
+                            return colors[v] == 0;
+                        },
+                        [&] (size_t v, size_t p) { }
                 );
                 children_groups.push_back(group);
             }
@@ -723,8 +721,10 @@ void SetOutput (const bool &res) {
 /* Main function */
 int main() {
     size_t n, m;
+
     Graph g;
     GetInput(n, m, g);
     SetOutput(g.IsPlanar());
+
     return 0;
 }
