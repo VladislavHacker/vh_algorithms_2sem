@@ -1,16 +1,16 @@
+#include <algorithm>
 #include <iostream>
 #include <queue>
-#include <vector>
-#include <algorithm>
 #include <limits>
 #include <tuple>
+#include <vector>
 
-class isLess {
+class IsLess {
 public:
 
     bool operator () (
-        std::tuple<size_t , ssize_t , size_t> &a,
-        std::tuple<size_t , ssize_t , size_t> &b
+            std::tuple<size_t, ssize_t, size_t> &a,
+            std::tuple<size_t, ssize_t, size_t> &b
     ) {
         return std::get<1>(a) < std::get<1>(b);
     }
@@ -18,19 +18,18 @@ public:
 };
 
 ssize_t deikstra (
-    std::vector < std::vector <std::pair <size_t , size_t > > >  &graph,
-    size_t &n,
-    size_t &m,
-    size_t &k,
-    size_t &s,
-    size_t &f
+        std::vector < std::vector <std::pair <size_t, size_t > > >  &graph,
+        size_t n,
+        size_t k,
+        size_t s,
+        size_t f
 ) {
     std::vector <size_t> ways(n, std::numeric_limits<size_t>::max());
     std::priority_queue <
-        std::tuple<size_t , ssize_t , size_t>,
-        std::vector < std::tuple<size_t , ssize_t , size_t>>,
-        isLess
-    > order ( (isLess()) );
+            std::tuple <size_t, ssize_t, size_t>,
+            std::vector < std::tuple<size_t, ssize_t, size_t>>,
+            IsLess
+    > order ( (IsLess()) );
     ways[s] = 0;
     order.emplace(s, ways[s], 0);
     for (size_t i = 0; i < graph.size(); ++i) {
@@ -55,18 +54,18 @@ ssize_t deikstra (
 }
 
 void getInput (
-    std::istream &in,
-    std::vector < std::vector <std::pair <size_t , size_t > > > &graph,
-    size_t &n,
-    size_t &m,
-    size_t &k,
-    size_t &s,
-    size_t &f
+        std::istream &in,
+        std::vector < std::vector <std::pair <size_t, size_t > > > &graph,
+        size_t &n,
+        size_t &m,
+        size_t &k,
+        size_t &s,
+        size_t &f
 ) {
     in >> n >> m >> k >> s >> f;
     --s;
     --f;
-    graph.assign(n, std::vector <std::pair <size_t , size_t > > ());
+    graph.assign(n, std::vector <std::pair <size_t, size_t > > ());
     for (size_t i = 0; i < m; ++i) {
         size_t s_i, f_i, p_i;
         in >> s_i >> f_i >> p_i;
@@ -75,16 +74,16 @@ void getInput (
 }
 
 void setOutput (
-    std::ostream &out,
-    ssize_t cost
+        std::ostream &out,
+        ssize_t cost
 ) {
     out << cost;
 }
 
 int main() {
-    std::vector < std::vector <std::pair <size_t , size_t > > > graph;
+    std::vector < std::vector <std::pair <size_t, size_t > > > graph;
     size_t n, m, k, s, f;
     getInput(std::cin, graph, n, m, k, s, f);
-    setOutput(std::cout, deikstra(graph, n, m, k, s, f));
+    setOutput(std::cout, deikstra(graph, n, k, s, f));
     return 0;
 }
