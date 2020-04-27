@@ -1,11 +1,11 @@
-#include <iostream>
-#include <vector>
-#include <deque>
-#include <limits>
 #include <algorithm>
+#include <deque>
+#include <iostream>
+#include <limits>
 #include <queue>
+#include <vector>
 
-class cmp{
+class Cmp{
 public:
     bool operator() (std::pair<size_t, size_t> & a, std::pair<size_t, size_t> & b) const {
         return a.second > b.second;
@@ -15,9 +15,9 @@ public:
 size_t search(size_t m, size_t a, size_t b, size_t x, size_t y) {
     std::vector <size_t> ways(m, std::numeric_limits<size_t>::max());
     std::vector <bool> visited(m,false);
-    std::priority_queue<std::pair<size_t , size_t >, std::vector <std::pair<size_t , size_t >>, cmp> order((cmp()));
+    std::priority_queue <std::pair<size_t , size_t >, std::vector <std::pair<size_t , size_t >>, Cmp> order((Cmp()));
     ways[x] = 0;
-    order.push(std::pair<size_t ,size_t >(x, 0));
+    order.push(std::pair <size_t ,size_t > (x, 0));
     visited[x] = true;
     while (!order.empty()) {
         if (visited[y]) {
