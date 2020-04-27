@@ -1,13 +1,13 @@
-#include <iostream>
-#include <vector>
-#include <queue>
 #include <algorithm>
-#include <limits>
 #include <functional>
+#include <limits>
 #include <iomanip>
+#include <iostream>
+#include <queue>
+#include <vector>
 
 template <typename Type>
-class comp {
+class Comp {
 public:
     bool operator () (
         std::pair <size_t, Type> &a,
@@ -29,10 +29,10 @@ Type deikstra (
     std::priority_queue <
         std::pair <size_t, Type>,
         std::vector < std::pair <size_t, Type> >,
-        comp <Type>
-    > order( (comp<Type>()) );
+        Comp <Type>
+    > order( (Comp <Type> ()) );
     std::vector <Type> ways (graph.size(), std::numeric_limits<Type>::max());
-    ways[s] = static_cast<Type> (0);
+    ways[s] = static_cast <Type> (0);
     order.emplace(s, ways[s]);
     for (size_t i = 0; i < graph.size(); ++i) {
         size_t v = order.top().first;
