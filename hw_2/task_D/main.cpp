@@ -5,7 +5,7 @@
 void getInput (
     std::vector < std::bitset < 1000 > > &graph,
 ) {
-	int n;
+    int n;
     std::cin >> n;
     std::string data;
     for (int i = 0; i < n; ++i) {
