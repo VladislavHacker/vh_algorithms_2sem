@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <cmath>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 class SparseTable {
 public:
@@ -12,8 +12,8 @@ public:
             log_.push_back(ceil(log2(i)));
         }
         table_.assign(
-                ceil(log2(v_.size())),
-                std::vector< std::pair <long long, long long> > (v_.size(), std::make_pair(0, 0))
+            ceil(log2(v_.size())),
+            std::vector< std::pair <long long, long long> > (v_.size(), std::make_pair(0, 0))
         );
 
         for (size_t i = 0; i < v_.size(); ++i) {
