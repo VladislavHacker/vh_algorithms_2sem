@@ -1,7 +1,7 @@
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <vector>
-#include <cmath>
 
 class SparseTable {
 public:
@@ -26,6 +26,8 @@ public:
             }
         }
     }
+
+    ~SparseTable() = default;
 
     long long query (size_t l, size_t r) {
         size_t k = log_[r - l + 1] - 1;
@@ -58,7 +60,7 @@ private:
     std::vector <long long> v_;
     Table table_;
     std::vector <size_t> log_;
-    
+
 };
 
 void getInput (
